@@ -1,21 +1,29 @@
 <ion-header [translucent]="true">
-  
+  <ion-button expand="block" (click)="counterup()" [disabled]="numero===MAXIMO"><ion-icon name="caret-up-outline" ></ion-icon></ion-button>
+
 </ion-header >
 
 <ion-content [fullscreen]="true">
  
 
-<ion-button expand="block">Bloqueo</ion-button> 
+
 
  <!--one-way binding, (interpolacion) se hace con doble llave {{}}-->
-  <div class="center-content big-font" >
+  <div class="center-content big-font colorblack" >
     {{numero}}
   </div>
+
+
 
 </ion-content>
 
 <ion-footer>
   
-    
+<ion-button 
+expand="block" 
+(click)="counterdown()" 
+[disabled]="numero===MINIMO" >
+  <ion-icon name="caret-down-outline"></ion-icon>
+</ion-button>
   
 </ion-footer>

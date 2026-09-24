@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonContent } from '@ionic/angular';
-import { IonButton } from '@ionic/angular';
-import { IonFooter } from '@ionic/angular';
+import { IonHeader, IonContent, IonButton, IonFooter, IonIcon } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import {Preferences} from '@capacitor/preferences';
+import { ChangeDetectorRef } from '@angular/core';
+
+//Importa todos los iconos al estas vacias las llaves.
+import{caretDownOutline, caretUpOutline}from 'ionicons/icons'
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonContent, IonButton, IonFooter],
+  imports: [IonHeader, IonContent, IonButton, IonFooter, IonIcon],
 })
 
 
@@ -16,6 +20,67 @@ export class HomePage {
 
   public numero: number=0;
 
+  //Constantes
+  public readonly MINIMO: number=0;
+  public readonly MAXIMO: number=10;
+  private readonly KEY_NUMBER: string= 'ddr_key_number'
 
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {
+    addIcons({
+      caretUpOutline,
+      caretDownOutline
+    });
+
+  }
+
+  saveNumber(){
+    Preferences.set({
+      key: this.KEY_NUMBER,
+      value: this.numero.toString(),
+    }
+    );
+  }
+
+  async ionViewWillEnter(){
+    console.log('ionViewWillEnter')
+  
+
+  const counterPreferences= await Preferences.get({key: this.KEY_NUMBER});
+  if (counterPreferences.value){
+    const numero = +counterPreferences.value;
+    if (isNaN(numero) || numero < this.MINIMO || numero > this.MAXIMO ){
+
+    
+     this.numero=this.MINIMO;
+    this.saveNumber();
+  
+  }else{
+      this.numero= numero;
+      this.cdr.detectChanges();
+   }
+  }
+  }
+    
+  
+
+  counterup(){
+    
+    if(this.numero < this.MAXIMO){
+      this.numero++;
+      this.saveNumber()
+      console.log('Up', this.numero)
+      
+    }
+
+  }
+
+  counterdown(){
+  
+    if(this.numero > this.MINIMO){
+     this.numero--;
+     this.saveNumber();
+     console.log('Down', this.numero)
+    }
+  }
 }
+
