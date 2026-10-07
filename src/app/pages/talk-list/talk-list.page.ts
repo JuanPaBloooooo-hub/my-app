@@ -1,9 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem,IonInput, IonButton, IonIcon, IonList } from '@ionic/angular';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem,IonInput, IonButton, IonIcon, IonList, IonItemSliding, IonItemOption, IonItemOptions } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import{ addOutline }from 'ionicons/icons';
+import{ addOutline,trashOutline }from 'ionicons/icons';
+
+import { ChangeDetectorRef } from '@angular/core';
+
 import { AlertControllerService } from '../../services/alert';
 
 
@@ -22,24 +25,29 @@ import { AlertControllerService } from '../../services/alert';
     IonInput,
     IonButton,
     IonIcon,
-    IonList
+    IonList,
+    IonItemSliding,
+    IonItemOption,
+    IonItemOptions
 
   ],
 })
 export class TalkListPage implements OnInit {
+  private cdr = inject(ChangeDetectorRef);
 
   private alertControllerService = inject(AlertControllerService);
 
 public tasks: string[] =[
-  // "Comprar Leche",
-  // "Comprar Pan",
-  // "Comprar Huevos",
+   "Comprar Leche",
+   "Comprar Pan",
+   "Comprar Huevos",
 ]; 
 public task:string='';
 
   constructor() {
     addIcons({
-      addOutline
+      addOutline,
+      trashOutline
     })
   }
 
@@ -70,5 +78,34 @@ public task:string='';
       );
   }
 
+  confirmDeleteTask(task: string) {
+    // console.log('Confirmar eliminación de tarea:', task);
+this.alertControllerService.alertConfirm(
+   'Confirmar Eliminación',
+    'Eliminar Tarea',
+    `¿Estás seguro de que deseas eliminar esta tarea?`,
+    'Eliminar',
+
+
+  //funcion anonima
+  () => this.deleteTask(task),
+  
+)
+
+  }
+
+  private deleteTask(task: string) {
+    console.log('La tarea a eliminar es:', task);
+
+    const index = this.tasks.findIndex(
+      (item: string) => item.toLowerCase().trim() === task.toLowerCase().trim()
+    );
+
+    console.log(index);
+    if (index !== -1) {
+      this.tasks.splice(index, 1);
+      this.cdr.markForCheck();
+    }
+  }
 }
 
