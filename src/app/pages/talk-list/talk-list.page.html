@@ -42,6 +42,7 @@
 
 
   <ion-list>
+    <ion-reorder-group [disabled]="false" (ionReorderEnd)="handleReorderEnd($any($event))">
 
     @if(tasks.length === 0){
 
@@ -64,6 +65,7 @@
             <ion-label>
               {{ task }}
             </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
 
           </ion-item>
 
@@ -87,11 +89,12 @@
           </ion-item-options>
 
         </ion-item-sliding>
-
+      
       }
 
     }
-
+   
+</ion-reorder-group>
   </ion-list>
 
 </ion-content>

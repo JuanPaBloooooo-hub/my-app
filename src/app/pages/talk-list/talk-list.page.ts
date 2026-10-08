@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem,IonInput, IonButton, IonIcon, IonList, IonItemSliding, IonItemOption, IonItemOptions } from '@ionic/angular';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem,IonInput, IonButton, IonIcon, IonList, IonItemSliding, IonItemOption, IonItemOptions, IonReorder, IonReorderGroup, ReorderEndCustomEvent } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import{ addOutline,trashOutline }from 'ionicons/icons';
 
@@ -28,7 +28,9 @@ import { AlertControllerService } from '../../services/alert';
     IonList,
     IonItemSliding,
     IonItemOption,
-    IonItemOptions
+    IonItemOptions,
+    IonReorder, IonReorderGroup,
+    
 
   ],
 })
@@ -106,6 +108,14 @@ this.alertControllerService.alertConfirm(
       this.tasks.splice(index, 1);
       this.cdr.markForCheck();
     }
+  }
+
+   handleReorderEnd(event: ReorderEndCustomEvent) {
+  
+    console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
+
+   
+    event.detail.complete();
   }
 }
 
