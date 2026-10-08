@@ -1,0 +1,97 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center ion-title-bold">
+      Mis Tareas
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- IonItem: Puede almacenar diferentes elementos:
+       imágenes, inputs, botones, etc.
+  -->
+  <ion-item>
+
+    <!-- IonInput: Por defecto es de tipo text -->
+    <ion-input
+      type="text"
+      placeholder="Nueva Tarea"
+      name="task"
+      [(ngModel)]="task">
+    </ion-input>
+
+    <ion-button
+      (click)="addTask()"
+      [disabled]="!task">
+
+      <ion-icon name="add-outline"></ion-icon>
+
+    </ion-button>
+
+  </ion-item>
+
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        task-list
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-list>
+
+    @if(tasks.length === 0){
+
+      <ion-item>
+        <ion-label>
+          No hay tareas
+        </ion-label>
+      </ion-item>
+
+    }
+    @else {
+
+      @for(task of tasks; track task){
+
+        <ion-item-sliding>
+
+          <!-- Elemento que se muestra normalmente -->
+          <ion-item>
+
+            <ion-label>
+              {{ task }}
+            </ion-label>
+
+          </ion-item>
+
+
+          <!-- Opciones que aparecen al deslizar -->
+          <ion-item-options side="end">
+
+            <ion-item-option
+              color="danger"
+              (click)="confirmDeleteTask(task)">
+
+              <ion-icon
+                
+                slot="icon-only"
+                name="trash-outline"
+                >
+              </ion-icon>
+
+            </ion-item-option>
+
+          </ion-item-options>
+
+        </ion-item-sliding>
+
+      }
+
+    }
+
+  </ion-list>
+
+</ion-content>
